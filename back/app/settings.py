@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     # GraphQL server implementation framework
     'graphene_django',
 
+    # Own applications
+    'subjects',
 ]
 
 MIDDLEWARE = [
