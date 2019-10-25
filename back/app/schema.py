@@ -1,13 +1,16 @@
 import graphene
 import graphql_jwt
 
+import subjects.schema
 
-'''
+
 class Query(
+    subjects.schema.Query,
     graphene.ObjectType,
 ):
     pass
 
+'''
 class Mutation(
     graphene.ObjectType,
 ):
@@ -17,6 +20,6 @@ class Mutation(
 '''
 
 schema = graphene.Schema(
-    #query=Query,
+    query=Query,
     #mutation=Mutation,
 )
