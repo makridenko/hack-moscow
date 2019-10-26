@@ -24,8 +24,12 @@ class UserInfo(models.Model):
         null=False,
     )
 
-    rating = models.IntegerField(
+    experience = models.FloatField(
         default=0,
+    )
+
+    coff = models.FloatField(
+        default=40,
     )
 
     def __str__(self):
@@ -45,24 +49,29 @@ class UserLessonRate(models.Model):
         null=False,
     )
 
-    rating = models.IntegerField(
+    user_rating = models.FloatField(
+        default=0,
+    )
+
+    lesson_rating = models.FloatField(
         default=0,
     )
 
 
-class UserTaskAnswer(models.Model):
+class UserTask(models.Model):
+    task = models.OneToOneField(
+        Task,
+        on_delete=models.CASCADE,
+        null=False,
+        unique=True,
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         null=False,
     )
 
-    lesson = models.ForeignKey(
-        Lesson,
-        on_delete=models.CASCADE,
-        null=False,
-    )
-
-    answer = models.BooleanField(
-        default = False,
+    is_done = models.BooleanField(
+        default=False,
     )
