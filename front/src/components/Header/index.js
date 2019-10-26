@@ -15,6 +15,7 @@ const HeaderStyled = styled.div`
       height: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
     
     .coins {
@@ -45,7 +46,7 @@ class Header extends Component {
     return (
       <HeaderStyled>
         <Container>
-          <img src={logo} alt='' />
+          <a href='/'><img src={logo} alt='' /></a>
           <div className='coins'>
             <img src={uCoin} alt='u-coin' />
             <div>

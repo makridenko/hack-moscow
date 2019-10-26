@@ -4,19 +4,27 @@ import { QueryRenderer, graphql } from 'react-relay'
 import styled from 'styled-components'
 
 import environment from '../../Environment'
-import ReactMarkdown from 'react-markdown'
+// import ReactMarkdown from 'react-markdown'
 import { withRouter } from 'react-router-dom'
-
-import arrowBack from './backArrow.svg'
+import Question from './Question'
 
 const MyQuery = graphql`
-query ArticleBlockQuery {
-  lessons {
+query TestBlockQuery {
+   tasks {
     edges {
       node {
-        id
-        title
-        theory
+        lesson {
+          title
+        }
+        description
+        answerSet {
+          edges {
+            node {
+              title
+              isTrue
+            }
+          }
+        }
       }
     }
   }
@@ -33,7 +41,7 @@ const BlockStyled = styled.div`
    .header {
       width: 100%;
       font-weight: bold;
-      font-size: 30px;
+      font-size: 24px;
       margin-bottom: 8px;
    }
    
@@ -41,12 +49,12 @@ const BlockStyled = styled.div`
       width: 100%;
       font-weight: bold;
       font-size: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 30px;
 
       color: rgba(0, 0, 0, 0.45);
    }
 
-   .article-block {
+   .test-block {
      display: flex;
      flex-direction: column;
      justify-content: space-around;
@@ -74,13 +82,20 @@ const BlockStyled = styled.div`
      
      .text {
         width: 100%;
-        min-height: 371px;
+        min-height: 130px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         background: #F8F8F8;
         border-radius: 10px;
-        padding: 20px 40px;
+        padding: 52px 40px;
         
         font-weight: 500;
+        font-size: 24px;
+     }
+     
+      .statusBar {
+        width: 100%;
+        margin: 24px 0 10px;
+        font-weight: bold;
         font-size: 16px;
      }
      
@@ -117,6 +132,37 @@ const BlockStyled = styled.div`
      }
    }
    
+    .answer-item {
+      width: 100%;
+      height: 40px;
+      margin: 10px 0;
+      padding: 0 30px;
+      
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      
+      background: #2665C5;
+      border-radius: 10px;
+      color: #FFFFFF;
+      
+      transition: background 0.2s;
+      
+      &:hover {
+        background: #3e7cda;
+        text-decoration: none;
+      }
+      
+      &:active {
+          background: #2158ab;
+      }
+
+        font-weight: 500;
+        font-size: 16px;      
+     
+   
+   }
+   
   .btn-back {
       position: absolute;
       left: 40px;
@@ -138,9 +184,9 @@ const BlockStyled = styled.div`
    
 `
 
-class ArticleBlock extends Component {
+class TestBlock extends Component {
   render () {
-    const { history } = this.props
+    // const { history } = this.props
 
     return (
       <BlockStyled>
@@ -152,36 +198,21 @@ class ArticleBlock extends Component {
               return <div>{error.message}</div>
             } else if (props) {
               return (
-                <div className='article-block'>
-                  {props.lessons.edges.map(({ node }) =>
-                    <React.Fragment key={node.id}>
-                      <div className='header'>
-                        {node.title}
-                      </div>
-                      <div className='subheader'>
-                          Теория
-                      </div>
-
-                      <ReactMarkdown key={node.id} className='text'
-                        source={node.theory}/>
-                      <button className='btn-nxt' onClick={() => history.push(`/topics/${node.title}/test`)} >Дальше</button>
-                    </React.Fragment>
-                  )}
-
+                <div className='test-block'>
+                  <Question edges={props.tasks.edges} />
                 </div>
               )
             }
             return <div>Loading</div>
           }}
         />
-        <button className='btn-back' onClick={history.goBack}><img src={arrowBack} alt='' /> Назад</button>
       </BlockStyled>
     )
   }
 }
 
-ArticleBlock.propTypes = {
+TestBlock.propTypes = {
   history: PropTypes.object.isRequired
 }
 
-export default withRouter(ArticleBlock)
+export default withRouter(TestBlock)

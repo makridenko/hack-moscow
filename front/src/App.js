@@ -5,14 +5,17 @@ import { Switch, BrowserRouter as Router, Route } from 'react-router-dom'
 // import ArticleBlock from './components/ArticleBlock'
 import TopicsPage from './components/TopicsPage'
 import ArticlePage from './components/ArticlePage'
+import TestPage from './components/TestPage'
+import AuthPage from './components/AuthPage'
 
 function App () {
   return (
     <Router>
       <Switch>
         <Route exact path='/' component={TopicsPage}/>
-        {/* <Route path='/topics' component={TopicsPage}/> */}
-        <Route path='/topics/:topic' component={ArticlePage}/>
+        <Route exact path='/auth' component={AuthPage}/>
+        <Route exact path='/topics/:topic' component={ArticlePage}/>
+        <Route exact path='/topics/:topic/test' component={TestPage}/>
       </Switch>
     </Router>
   )
