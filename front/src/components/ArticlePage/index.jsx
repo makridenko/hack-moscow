@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import { Container } from 'reactstrap'
 import styled from 'styled-components'
-import TopicsBlock from '../TopicsBlock'
 import Header from '../Header'
-import UserInfoBlock from '../UserInfoBlock'
+import ArticleBlock from '../ArticleBlock'
 
 const PageStyled = styled.div`
     height: 100vh;
@@ -20,21 +19,17 @@ const PageStyled = styled.div`
     }
 `
 
-class TopicsPage extends Component {
+class ArticlePage extends Component {
   render () {
     return (
       <PageStyled>
         <Header />
         <Container className='topics-container'>
-          <Row>
-            <Col xs='3'><UserInfoBlock /></Col>
-            <Col xs='9'><TopicsBlock /></Col>
-          </Row>
+          <ArticleBlock />
         </Container>
       </PageStyled>
-
     )
   }
 }
 
-export default TopicsPage
+export default ArticlePage
