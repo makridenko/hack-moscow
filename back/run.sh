@@ -31,7 +31,7 @@ fi
 
 if [[ $1 = "schema" ]]; then
   python3 manage.py graphql_schema --indent 2
-  mv schema.json /data/.
+  mv schema.json ../data/.
   exit 1
 fi
 
