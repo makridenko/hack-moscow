@@ -14,11 +14,19 @@ if [[ $1 = "web" ]]; then
 fi
 
 if [[ $1 = "migrate" ]]; then
+  python3 manage.py migrate
+  exit 1
+fi
+
+if [[ $1 = "null" ]]; then
   rm db.sqlite3
+  rm -rf users/migrations/
+  rm -rf subjects/migrations/
+  python3 manage.py migrate
+  python3 manage.py makemigrations subjects
+  python3 manage.py makemigrations users
   python3 manage.py migrate
   python3 manage.py createsuperuser
-
-  exit 1
 fi
 
 if [[ $1 = "schema" ]]; then

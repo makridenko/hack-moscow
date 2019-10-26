@@ -2,10 +2,12 @@ import graphene
 import graphql_jwt
 
 import subjects.schema
+import users.schema
 
 
 class Query(
     subjects.schema.Query,
+    users.schema.Query,
     graphene.ObjectType,
 ):
     pass

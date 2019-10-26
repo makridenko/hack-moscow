@@ -1,5 +1,5 @@
-import django_filters
 import graphene
+import django_filters
 from graphene import relay
 
 from graphene_django.filter import DjangoFilterConnectionField
