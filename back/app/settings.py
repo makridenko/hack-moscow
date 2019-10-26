@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'graphene_django',
 
     # Own applications
+    'users',
     'subjects',
 ]
 
