@@ -7,6 +7,7 @@ from graphene_django.types import DjangoObjectType
 
 from .models import (
     Subject,
+    Unit,
     Lesson,
     Task,
     Answer,
@@ -18,6 +19,12 @@ from .models import (
 class SubjectFilter(django_filters.FilterSet):
     class Meta:
         model = Subject
+        fields = []
+
+
+class UnitFilter(django_filters.FilterSet):
+    class Meta:
+        model = Unit
         fields = []
 
 
@@ -48,6 +55,13 @@ class SubjectNode(DjangoObjectType):
         interfaces = (graphene.relay.Node, )
 
 
+class UnitNode(DjangoObjectType):
+    class Meta:
+        model = Unit
+        filter_fields = {}
+        interfaces = (graphene.relay.Node, )
+
+
 class LessonNode(DjangoObjectType):
     class Meta:
         model = Lesson
@@ -74,6 +88,12 @@ class Query(graphene.ObjectType):
     subjects = DjangoFilterConnectionField(
         SubjectNode,
         filterset_class = SubjectFilter,
+    )
+
+    unit = graphene.relay.Node.Field(UnitNode)
+    units = DjangoFilterConnectionField(
+        UnitNode,
+        filterset_class = UnitFilter,
     )
 
     lesson = graphene.relay.Node.Field(LessonNode)

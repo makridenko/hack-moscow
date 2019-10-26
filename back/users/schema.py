@@ -10,14 +10,16 @@ from graphene_django.types import DjangoObjectType
 from .models import (
     UserInfo,
     UserLessonRate,
-    UserTaskAnswer,
+    UserTask,
 )
 
+'''
 from subjects.models import (
     Answer,
     Task,
     Lesson,
 )
+'''
 
 
 """ GraphQL filters """
@@ -40,9 +42,9 @@ class UserLessonRateFilter(django_filters.FilterSet):
         fields = []
 
 
-class UserTaskAnswerFilter(django_filters.FilterSet):
+class UserTaskFilter(django_filters.FilterSet):
     class Meta:
-        model = UserTaskAnswer
+        model = UserTask
         fields = []
 
 
@@ -71,15 +73,16 @@ class UserLessonRateNode(DjangoObjectType):
         interfaces = (graphene.relay.Node, )
 
 
-class UserTaskAnswerNode(DjangoObjectType):
+class UserTaskNode(DjangoObjectType):
     class Meta:
-        model = UserTaskAnswer
+        model = UserTask
         filter_fields = {}
         interfaces = (graphene.relay.Node, )
 
 
 ''' Mutations '''
 
+'''
 class CreateUserTaskAnswer(relay.ClientIDMutation):
     rate = graphene.Field(UserLessonRateNode)
 
@@ -118,8 +121,9 @@ class CreateUserTaskAnswer(relay.ClientIDMutation):
         print(f'Всего заданий в этом разделе: {total_tasks}')
         print(f'Пользователь выполнил: {user_tasks}')
 
-        if user_tasks == 0: user_coff_for_task = 1
-        else: user_coff_for_task = 1 - (user_tasks/total_tasks)
+
+        #if user_tasks == 0: user_coff_for_task = 1
+        #else: user_coff_for_task = 1 - (user_tasks/total_tasks)
 
         user_rating = UserInfo.objects.get(user=user).rating
         lesson_rating = Lesson.objects.get(task=current_task).rating
@@ -131,7 +135,7 @@ class CreateUserTaskAnswer(relay.ClientIDMutation):
 
         print(f'Предсказание: {prediction}')
 
-        new_user_rating = user_rating + user_coff_for_task*(user_answer+prediction)
+        new_user_rating = user_rating + (user_answer+prediction)
 
         print(f'Обновленный рейтинг пользователя: {new_user_rating}')
 
@@ -155,9 +159,6 @@ class CreateUserTaskAnswer(relay.ClientIDMutation):
             lesson=Lesson.objects.get(task=current_task),
         )
 
-        sum = 0
-        for i in range(len(all_of_answers)):
-            sum += all_of_answers[i].rating
 
         new_lesson_rating = sum/len(all_of_answers)
 
@@ -184,7 +185,7 @@ class CreateUserTaskAnswer(relay.ClientIDMutation):
         user_info.save()
 
         return CreateUserTaskAnswer(rate=user_lesson_rate)
-
+'''
 
 class CreateUser(relay.ClientIDMutation):
     user = graphene.Field(UserNode)
@@ -241,13 +242,13 @@ class Query(graphene.ObjectType):
         filterset_class = UserLessonRateFilter,
     )
 
-    user_task_answer = graphene.relay.Node.Field(UserTaskAnswerNode)
-    user_task_answers = DjangoFilterConnectionField(
-        UserTaskAnswerNode,
-        filterset_class = UserTaskAnswerFilter,
+    user_task = graphene.relay.Node.Field(UserTaskNode)
+    user_tasks = DjangoFilterConnectionField(
+        UserTaskNode,
+        filterset_class = UserTaskFilter,
     )
 
 
 class Mutation(graphene.ObjectType):
-    create_user_task_answer = CreateUserTaskAnswer.Field()
+    # create_user_task_answer = CreateUserTaskAnswer.Field()
     create_user = CreateUser.Field()
