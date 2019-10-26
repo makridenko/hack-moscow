@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { QueryRenderer, graphql } from 'react-relay'
+// import { QueryRenderer, graphql } from 'react-relay'
 import styled from 'styled-components'
 
-import environment from '../../Environment'
-import ReactMarkdown from 'react-markdown'
+// import environment from '../../Environment'
+// import ReactMarkdown from 'react-markdown'
 import { withRouter } from 'react-router-dom'
 
 import arrowBack from './backArrow.svg'
 
+/*
 const MyQuery = graphql`
 query ArticleBlockQuery {
   lessons {
@@ -22,21 +23,22 @@ query ArticleBlockQuery {
   }
 }
 `
+*/
 
 const BlockStyled = styled.div`
    position: relative;
    margin: 30px 0;
-   
+
    background: #FFFFFF;
    border-radius: 10px;
-   
+
    .header {
       width: 100%;
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 8px;
    }
-   
+
     .subheader {
       width: 100%;
       font-weight: bold;
@@ -52,26 +54,26 @@ const BlockStyled = styled.div`
      justify-content: space-around;
      align-items: center;
      padding: 25px 70px;
-     
+
       width: 800px;
       margin: 24px auto;
       padding: 0 30px;
-      
+
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
 
-      
+
+
       &:hover {
         background: #FFFFFF;
       }
 
      .title {
         font-weight: bold;
-        font-size: 18px;      
+        font-size: 18px;
      }
-     
+
      .text {
         width: 100%;
         min-height: 371px;
@@ -79,11 +81,11 @@ const BlockStyled = styled.div`
         background: #F8F8F8;
         border-radius: 10px;
         padding: 20px 40px;
-        
+
         font-weight: 500;
         font-size: 16px;
      }
-     
+
      .btn-nxt {
         width: 204px;
         height: 45px;
@@ -97,18 +99,18 @@ const BlockStyled = styled.div`
         font-size: 16px;
 
         letter-spacing: -0.005em;
-        
+
         &:hover {
           background: #789fed;
         }
-        
+
         &:active {
           background: #4b7fe7;
         }
      }
-     
 
-     
+
+
      .link {
         color: #ffffff;
         text-decoration: underline;
@@ -116,7 +118,7 @@ const BlockStyled = styled.div`
         font-size: 18px;
      }
    }
-   
+
   .btn-back {
       position: absolute;
       left: 40px;
@@ -130,12 +132,12 @@ const BlockStyled = styled.div`
       outline: none;
 
       color: #AFB9D2;
-      
+
       img {
         margin-right: 10px;
       }
   }
-   
+
 `
 
 class ArticleBlock extends Component {
@@ -144,7 +146,7 @@ class ArticleBlock extends Component {
 
     return (
       <BlockStyled>
-        <QueryRenderer
+        {/*<QueryRenderer
           environment={environment}
           query={MyQuery}
           render={({ error, props }) => {
@@ -174,6 +176,7 @@ class ArticleBlock extends Component {
             return <div>Loading</div>
           }}
         />
+        */}
         <button className='btn-back' onClick={history.goBack}><img src={arrowBack} alt='' /> Назад</button>
       </BlockStyled>
     )

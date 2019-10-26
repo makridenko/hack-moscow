@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { graphql, QueryRenderer } from 'react-relay'
-import environment from '../../Environment'
+// import { graphql, QueryRenderer } from 'react-relay'
+// import environment from '../../Environment'
 
-const MyQuery = graphql`
+/* const MyQuery = graphql`
 query UserInfoBlockQuery {
    userInfos {
     edges {
@@ -17,6 +17,7 @@ query UserInfoBlockQuery {
   }
 }
 `
+*/
 
 const BlockStyled = styled.div`
    height: 584px;
@@ -28,21 +29,21 @@ const BlockStyled = styled.div`
    padding: 16px;
    margin: 30px 0;
    background-image: url('/images/Paper.svg');
-   
+
    .name {
       font-weight: bold;
       font-size: 28px;
       line-height: 34px;
       margin-bottom: 8px;
    }
-   
+
    .grade {
       font-weight: bold;
       font-size: 18px;
       line-height: 22px;
       color: #686868;
    }
-   
+
    .avatar {
      text-align: center;
     img {
@@ -50,29 +51,29 @@ const BlockStyled = styled.div`
       mix-blend-mode: multiply;
     }
    }
-   
+
    .rating {
       font-weight: bold;
       font-size: 20px;
-     
+
      .yourlvl {
         font-size: 14px;
      }
-     
+
      .count {
         font-size: 50px;
         line-height: 37px;
      }
-   
+
      .bar {
         width: 100%;
         height: 25px;
         margin-top: 8px;
-        
+
         background: #FF8087;
         border-radius: 10px;
      }
-     
+
      .rating-strip {
         height: 25px;
         background: #C55057;
@@ -93,7 +94,7 @@ class UserInfoBlock extends Component {
   render () {
     return (
       <BlockStyled>
-        <QueryRenderer
+        {/*<QueryRenderer
           environment={environment}
           query={MyQuery}
           render={({ error, props }) => {
@@ -122,7 +123,7 @@ class UserInfoBlock extends Component {
 
             return <div>Loading</div>
           }}
-        />
+        />*/}
       </BlockStyled>
     )
   }

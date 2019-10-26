@@ -4,6 +4,7 @@ import graphql_relay
 from graphene import relay
 from django.contrib.auth import get_user_model
 
+from django.contrib.auth import authenticate
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
 
@@ -118,6 +119,25 @@ class CreateUser(relay.ClientIDMutation):
         return CreateUser(user=user)
 
 
+class UserLogIn(graphene.Mutation):
+    user = graphene.Field(UserNode)
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    def mutate(self, info, username, password):
+        user = authenticate(
+            username=username,
+            password=password,
+        )
+
+        if not user:
+            raise Exception('Invalid username or password')
+
+        return UserLogIn(user=user)
+
+
 class Query(graphene.ObjectType):
     user = graphene.relay.Node.Field(UserNode)
     users = DjangoFilterConnectionField(
@@ -147,3 +167,4 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     # create_user_task_answer = CreateUserTaskAnswer.Field()
     create_user = CreateUser.Field()
+    login = UserLogIn.Field()
