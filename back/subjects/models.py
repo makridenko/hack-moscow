@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Subject(models.Model):
     title = models.CharField(
         max_length=100,
@@ -24,6 +25,10 @@ class Lesson(models.Model):
         Subject,
         on_delete=models.CASCADE,
         null=False,
+    )
+
+    rating = models.IntegerField(
+        default=0,
     )
 
     def __str__(self):

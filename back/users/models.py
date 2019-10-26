@@ -57,8 +57,8 @@ class UserTaskAnswer(models.Model):
         null=False,
     )
 
-    task = models.ForeignKey(
-        Task,
+    lesson = models.ForeignKey(
+        Lesson,
         on_delete=models.CASCADE,
         null=False,
     )
