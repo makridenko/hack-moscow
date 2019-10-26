@@ -25,7 +25,7 @@ const network = Network.create((operation, variables) => {
 
 const environment = new Environment({
   network,
-  store,
+  store
 })
 
 export default environment
