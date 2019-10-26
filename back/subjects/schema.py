@@ -9,6 +9,7 @@ from .models import (
     Subject,
     Lesson,
     Task,
+    Answer,
 )
 
 
@@ -29,6 +30,12 @@ class LessonFilter(django_filters.FilterSet):
 class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
+        fields = []
+
+
+class AnswerFilter(django_filters.FilterSet):
+    class Meta:
+        model = Answer
         fields = []
 
 
@@ -55,6 +62,13 @@ class TaskNode(DjangoObjectType):
         interfaces = (graphene.relay.Node, )
 
 
+class AnswerNode(DjangoObjectType):
+    class Meta:
+        model = Answer
+        filter_fields = {}
+        interfaces = (graphene.relay.Node, )
+
+
 class Query(graphene.ObjectType):
     subject = graphene.relay.Node.Field(SubjectNode)
     subjects = DjangoFilterConnectionField(
@@ -72,4 +86,10 @@ class Query(graphene.ObjectType):
     tasks = DjangoFilterConnectionField(
         TaskNode,
         filterset_class = TaskFilter,
+    )
+
+    answer = graphene.relay.Node.Field(AnswerNode)
+    answers = DjangoFilterConnectionField(
+        AnswerNode,
+        filterset_class = AnswerFilter,
     )
