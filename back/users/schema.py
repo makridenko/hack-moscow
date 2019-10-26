@@ -186,6 +186,42 @@ class CreateUserTaskAnswer(relay.ClientIDMutation):
         return CreateUserTaskAnswer(rate=user_lesson_rate)
 
 
+class CreateUser(relay.ClientIDMutation):
+    user = graphene.Field(UserNode)
+
+    class Input:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        email = graphene.String(required=True)
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
+
+    def mutate_and_get_payload(root, info, **input):
+        user = get_user_model()(
+            username = input.get('username'),
+            email = input.get('email')
+        )
+
+        user.set_password(input.get('password'))
+        user.save()
+
+        user_info = UserInfo()
+        user_info.first_name = input.get('first_name')
+        user_info.last_name = input.get('last_name')
+        user_info.user = user
+        user_info.save()
+
+        all_lessons = Lesson.objects.all()
+
+        for lesson in all_lessons:
+            UserLessonRate(
+                user=user,
+                lesson=lesson,
+            ).save()
+
+        return CreateUser(user=user)
+
+
 class Query(graphene.ObjectType):
     user = graphene.relay.Node.Field(UserNode)
     users = DjangoFilterConnectionField(
@@ -214,3 +250,4 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     create_user_task_answer = CreateUserTaskAnswer.Field()
+    create_user = CreateUser.Field()
