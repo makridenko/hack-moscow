@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
-import TopicsBlock from '../TopicsBlock'
 import Header from '../Header'
 import UserInfoBlock from '../UserInfoBlock'
+import SubjectsBlock from '../SubjectsBlock'
 
 const PageStyled = styled.div`
     min-height: 100vh;
@@ -18,6 +18,12 @@ const PageStyled = styled.div`
       flex-grow: 1;
       align-items: stretch;
     }
+    
+    @media(max-width: 600px) {
+      .topics-container .row {
+        flex-direction: column
+      }
+    }
 `
 
 class TopicsPage extends Component {
@@ -27,12 +33,11 @@ class TopicsPage extends Component {
         <Header />
         <Container className='topics-container'>
           <Row>
-            <Col xs='3'><UserInfoBlock /></Col>
-            <Col xs='9'><TopicsBlock /></Col>
+            <Col xs='12' sm='3'><UserInfoBlock /></Col>
+            <Col xs='12' sm='9'><SubjectsBlock /></Col>
           </Row>
         </Container>
       </PageStyled>
-
     )
   }
 }

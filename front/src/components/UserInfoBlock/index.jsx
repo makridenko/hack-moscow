@@ -79,6 +79,53 @@ const BlockStyled = styled.div`
         border-radius: 10px;
      }
    }
+   
+   @media(max-width: 600px) {
+      height: 130px;
+      flex-direction: row;
+      margin: 15px 0;
+
+      .name-header {
+          flex: 1;
+          
+           .name {
+              font-size: 24px;
+           }
+           
+           .grade {
+              font-size: 16px;
+           }
+      }
+      
+      .avatar {
+        flex: 1;
+          width: 80px;
+        img {
+        width: auto;
+          height: 100%;
+          mix-blend-mode: multiply;
+        }
+       }
+   
+    .rating {
+       flex: 1;
+       text-align: right;
+       
+       font-size: 18px;
+     
+       .yourlvl {
+          font-size: 12px;
+       }
+       
+       .count {
+          font-size: 36px;
+          line-height: 37px;
+       }
+       
+       .bar {
+          display: none;
+        }
+    }
 `
 
 class UserInfoBlock extends Component {
@@ -106,7 +153,7 @@ class UserInfoBlock extends Component {
 
                   return (
                     <React.Fragment key={node.id}>
-                      <div>
+                      <div className='name-header'>
                         <div className='name'>{`${node.firstName} ${node.lastName}`}</div>
                         <div className='grade'>5 класс</div>
                       </div>

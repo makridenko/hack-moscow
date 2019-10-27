@@ -5,7 +5,7 @@ import { Container } from 'reactstrap'
 import logo from './logo.svg'
 import uCoin from './u-coin.svg'
 
-const HeaderStyled = styled.div`
+const HeaderStyled = styled.header`
     height: 70px;
     width: 100%;
     background: #242E66;

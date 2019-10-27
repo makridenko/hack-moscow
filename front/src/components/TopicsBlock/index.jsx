@@ -19,7 +19,7 @@ query TopicsBlockQuery {
 `
 
 const BlockStyled = styled.div`
-   height: 584px;
+   min-height: 584px;
    margin: 30px 0;
    
    background: #FFFFFF;
@@ -78,6 +78,9 @@ const BlockStyled = styled.div`
      }
    }
    
+    @media(max-width: 600px) {
+      margin: 15px 0;
+    }
 `
 
 class TopicsBlock extends Component {
