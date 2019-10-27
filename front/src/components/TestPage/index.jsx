@@ -51,6 +51,7 @@ const PageStyled = styled.div`
 class TestPage extends Component {
   render () {
     const id = this.props.match.params.id
+    console.log('TestPage');
     return (
       <PageStyled>
         <Header />
@@ -59,15 +60,17 @@ class TestPage extends Component {
             environment={environment}
             query={TestPageQuery}
             variables={{
-              lesson_Id: id
+              id: id
             }}
             render={({ error, props }) => {
               if (error) {
                 return <div>{error.message}</div>
               } else if (props) {
-                <TestBlock
-                  {...props}
-                />
+                return(
+                  <TestBlock
+                    {...props}
+                  />
+                )
               }
             }}
           />

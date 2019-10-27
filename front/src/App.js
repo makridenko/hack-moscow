@@ -83,7 +83,7 @@ export default class App extends Component {
           )}/>
 
           <Route exact path='/topics/:id' component={ArticlePage}/>
-          <Route exact path='/topics/:topic/test' component={TestPage}/>
+          <Route exact path='/topics/:id/test' component={TestPage}/>
         </Switch>
       </Router>
     )

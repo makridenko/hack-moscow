@@ -95,7 +95,7 @@ const BlockStyled = styled.div`
         font-size: 18px;
      }
    }
-   
+
     @media(max-width: 600px) {
       margin: 15px 0;
     }
@@ -114,6 +114,7 @@ class TopicsBlock extends Component {
   }
 
   render () {
+    console.log('!!!');
     return (
       <BlockStyled>
         <QueryRenderer
@@ -123,6 +124,7 @@ class TopicsBlock extends Component {
             if (error) {
               return <div>{error.message}</div>
             } else if (props) {
+              console.log(props);
               return (
                 <div className='topics-block'>
                   <div className='header'>Математика</div>

@@ -162,6 +162,7 @@ const BlockStyled = styled.div`
 
 class TestBlock extends Component {
   render () {
+    console.log('Test block !!!');
     return (
       <BlockStyled>
         <div className='test-block'>

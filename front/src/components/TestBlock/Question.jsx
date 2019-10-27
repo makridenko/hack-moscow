@@ -81,13 +81,14 @@ class Question extends Component {
     const { edges, history } = this.props
     const testLength = edges.length
 
+    console.log('!!!');
 
     if (step === testLength) {
       this.props.confirm(
         this.state.lessonId,
         this.state.checkUser
       )
-      history.push(`/${localStorage.getItem('USER_NAME')}`)
+      history.push(`/user/${localStorage.getItem('USER_NAME')}`)
       return 0
     } else {
       const { node } = edges[step]
