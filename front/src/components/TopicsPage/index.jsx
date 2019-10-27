@@ -19,6 +19,12 @@ const PageStyled = styled.div`
       flex-grow: 1;
       align-items: stretch;
     }
+    
+     @media(max-width: 600px) {
+      .topics-container .row {
+        flex-direction: column
+      }
+    }
 `
 
 class TopicsPage extends Component {
@@ -28,11 +34,11 @@ class TopicsPage extends Component {
         <Header />
         <Container className='topics-container'>
           <Row>
-            <Col xs='3'><UserInfoBlock {...this.props}/></Col>
+            <Col xs='12' sm='3'><UserInfoBlock {...this.props}/></Col>
             {localStorage.getItem('USER_EXP') === "0" ?
-              <Col xs='9'><FirstScenario /></Col>
+              <Col xs='12' sm='9'><FirstScenario /></Col>
               :
-              <Col xs='9'><TopicsBlock /></Col>
+              <Col xs='12' sm='9'><TopicsBlock /></Col>
             }
           </Row>
         </Container>

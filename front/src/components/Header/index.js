@@ -30,6 +30,8 @@ const HeaderStyled = styled.header`
         margin-right: 24px;
       }
       
+    
+      
       span {
         font-size: 14px;
 
@@ -39,6 +41,18 @@ const HeaderStyled = styled.header`
       }
      
     }
+    
+     @media(max-width: 600px) {
+        .coins {
+            text-align: right;
+            font-size: 14px;
+            
+            img { display: none; }
+            
+            span {
+                font-size: 12px;
+            }
+     }
 `
 
 class Header extends Component {

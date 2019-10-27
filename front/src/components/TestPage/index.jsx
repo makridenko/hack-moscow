@@ -58,14 +58,12 @@ class TestPage extends Component {
           <QueryRenderer
             environment={environment}
             query={TestPageQuery}
-            variables={{
-              lesson_Id: id
-            }}
+            variables={{ id: id }}
             render={({ error, props }) => {
               if (error) {
                 return <div>{error.message}</div>
               } else if (props) {
-                <TestBlock
+                return <TestBlock
                   {...props}
                 />
               }

@@ -12,7 +12,7 @@ const PageStyled = styled.div`
     flex-direction: column;
     overflow: auto;
 
-    .topics-container {
+    .subjects-container {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
@@ -20,7 +20,7 @@ const PageStyled = styled.div`
     }
     
     @media(max-width: 600px) {
-      .topics-container .row {
+      .subjects-container .row {
         flex-direction: column
       }
     }
@@ -31,7 +31,7 @@ class TopicsPage extends Component {
     return (
       <PageStyled>
         <Header />
-        <Container className='topics-container'>
+        <Container className='subjects-container'>
           <Row>
             <Col xs='12' sm='3'><UserInfoBlock /></Col>
             <Col xs='12' sm='9'><SubjectsBlock /></Col>

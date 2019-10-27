@@ -27,7 +27,7 @@ const BlockStyled = styled.div`
       margin-bottom: 24px;
    }
    
-   .subjects-container {
+   .subjects-flex {
      display: flex;
      flex-direction: row;
      flex-wrap: wrap;
@@ -86,7 +86,7 @@ const BlockStyled = styled.div`
         text-align: center;
      }
      
-     .subjects-container {
+     .subjects-flex {
        flex-direction: column;
        align-items:center;
      }
@@ -102,7 +102,7 @@ class SubjectsBlock extends Component {
         <div className='subjects-block'
         >
           <div className='header'>Предметы</div>
-          <div className='subjects-container'>
+          <div className='subjects-flex'>
             {data.map((item, i) => {
               const disabled = item.title !== 'Математика'
 
