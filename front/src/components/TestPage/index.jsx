@@ -6,6 +6,8 @@ import { graphql, QueryRenderer } from 'react-relay'
 
 import environment from '../../Environment'
 
+import TestMutation from '../../mutations/TestMutation'
+
 import Header from '../Header'
 import TestBlock from '../TestBlock'
 
@@ -49,6 +51,18 @@ const PageStyled = styled.div`
 `
 
 class TestPage extends Component {
+
+  confirm = (tests, lessonId) => {
+    TestMutation(tests, lessonId,
+      (result, username) => {
+        if (result) {
+          return username
+        } else {
+          alert('Error')
+        }
+      })
+  }
+
   render () {
     const id = this.props.match.params.id
     console.log('TestPage');
@@ -59,28 +73,19 @@ class TestPage extends Component {
           <QueryRenderer
             environment={environment}
             query={TestPageQuery}
-<<<<<<< HEAD
             variables={{
               id: id
             }}
-=======
-            variables={{ id: id }}
->>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
             render={({ error, props }) => {
               if (error) {
                 return <div>{error.message}</div>
               } else if (props) {
-<<<<<<< HEAD
                 return(
                   <TestBlock
                     {...props}
+                    confirm={this.confirm}
                   />
                 )
-=======
-                return <TestBlock
-                  {...props}
-                />
->>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
               }
             }}
           />

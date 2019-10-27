@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 8425132185a28a6ae9965f7536b2db6e
+ * @relayHash c3ff79d9f647f998cc6e62c939357d06
  */
 
 /* eslint-disable */
@@ -11,25 +11,21 @@
 import type { ConcreteRequest } from 'relay-runtime';
 export type TopicsBlockQueryVariables = {||};
 export type TopicsBlockQueryResponse = {|
-  +units: ?{|
-    +edges: $ReadOnlyArray<?{|
-      +node: ?{|
-        +id: string,
-        +title: string,
-        +subject: {|
-          +title: string
-        |},
-        +lessonSet: ?{|
-          +edges: $ReadOnlyArray<?{|
-            +node: ?{|
-              +id: string,
-              +title: string,
-            |}
-          |}>
-        |},
-      |}
-    |}>
-  |}
+  +aiUnits: ?$ReadOnlyArray<?{|
+    +id: string,
+    +title: string,
+    +subject: {|
+      +title: string
+    |},
+    +lessonSet: ?{|
+      +edges: $ReadOnlyArray<?{|
+        +node: ?{|
+          +id: string,
+          +title: string,
+        |}
+      |}>
+    |},
+  |}>
 |};
 export type TopicsBlockQuery = {|
   variables: TopicsBlockQueryVariables,
@@ -40,22 +36,18 @@ export type TopicsBlockQuery = {|
 
 /*
 query TopicsBlockQuery {
-  units {
-    edges {
-      node {
-        id
-        title
-        subject {
-          title
+  aiUnits {
+    id
+    title
+    subject {
+      title
+      id
+    }
+    lessonSet {
+      edges {
+        node {
           id
-        }
-        lessonSet {
-          edges {
-            node {
-              id
-              title
-            }
-          }
+          title
         }
       }
     }
@@ -125,49 +117,27 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "units",
+        "name": "aiUnits",
         "storageKey": null,
         "args": null,
-        "concreteType": "UnitNodeConnection",
-        "plural": false,
+        "concreteType": "UnitType",
+        "plural": true,
         "selections": [
+          (v0/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "edges",
+            "name": "subject",
             "storageKey": null,
             "args": null,
-            "concreteType": "UnitNodeEdge",
-            "plural": true,
+            "concreteType": "SubjectNode",
+            "plural": false,
             "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "node",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "UnitNode",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  (v1/*: any*/),
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "subject",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "SubjectNode",
-                    "plural": false,
-                    "selections": [
-                      (v1/*: any*/)
-                    ]
-                  },
-                  (v2/*: any*/)
-                ]
-              }
+              (v1/*: any*/)
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]
@@ -180,50 +150,28 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "units",
+        "name": "aiUnits",
         "storageKey": null,
         "args": null,
-        "concreteType": "UnitNodeConnection",
-        "plural": false,
+        "concreteType": "UnitType",
+        "plural": true,
         "selections": [
+          (v0/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "edges",
+            "name": "subject",
             "storageKey": null,
             "args": null,
-            "concreteType": "UnitNodeEdge",
-            "plural": true,
+            "concreteType": "SubjectNode",
+            "plural": false,
             "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "node",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "UnitNode",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/),
-                  (v1/*: any*/),
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "subject",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "SubjectNode",
-                    "plural": false,
-                    "selections": [
-                      (v1/*: any*/),
-                      (v0/*: any*/)
-                    ]
-                  },
-                  (v2/*: any*/)
-                ]
-              }
+              (v1/*: any*/),
+              (v0/*: any*/)
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]
@@ -232,11 +180,11 @@ return {
     "operationKind": "query",
     "name": "TopicsBlockQuery",
     "id": null,
-    "text": "query TopicsBlockQuery {\n  units {\n    edges {\n      node {\n        id\n        title\n        subject {\n          title\n          id\n        }\n        lessonSet {\n          edges {\n            node {\n              id\n              title\n            }\n          }\n        }\n      }\n    }\n  }\n}\n",
+    "text": "query TopicsBlockQuery {\n  aiUnits {\n    id\n    title\n    subject {\n      title\n      id\n    }\n    lessonSet {\n      edges {\n        node {\n          id\n          title\n        }\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '16997dcbd73fa88cd6d066ce4401b079';
+(node/*: any*/).hash = '211a92bc6e078ce9f84bc7ed6091cbda';
 module.exports = node;

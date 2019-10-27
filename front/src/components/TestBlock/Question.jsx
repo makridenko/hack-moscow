@@ -81,11 +81,7 @@ class Question extends Component {
     const { edges, history } = this.props
     const testLength = edges.length
 
-<<<<<<< HEAD
-    console.log('!!!');
-=======
-    const clickClass = ''
->>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
+    const clickClass = []
 
     if (step === testLength) {
       this.props.confirm(

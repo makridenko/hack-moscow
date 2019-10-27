@@ -14,21 +14,17 @@ import environment from '../../Environment'
 
 const MyQuery = graphql`
 query TopicsBlockQuery {
-  units {
-    edges {
-      node {
-        id
-        title
-        subject {
+  aiUnits {
+    id
+    title
+    subject {
+      title
+    }
+    lessonSet {
+      edges {
+        node {
+          id
           title
-        }
-        lessonSet {
-          edges {
-            node {
-              id
-              title
-            }
-          }
         }
       }
     }
@@ -97,34 +93,30 @@ const BlockStyled = styled.div`
         font-size: 18px;
      }
    }
-<<<<<<< HEAD
 
-=======
-   
     .list-group-item {
         border: 0;
     }
-   
->>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
+
     @media(max-width: 600px) {
        min-height: 200px;
       margin: 15px 0;
-      
+
       .topics-block {
           padding: 25px 30px;
       }
-      
+
       .header {
           text-align: center;
       }
-      
+
       .title {
         font-size: 16px;
       }
-      
+
       .link { display: none; }
-      
-   
+
+
     }
 `
 
@@ -151,31 +143,29 @@ class TopicsBlock extends Component {
             if (error) {
               return <div>{error.message}</div>
             } else if (props) {
-              console.log(props);
               return (
                 <div className='topics-block'>
                   <div className='header'>Математика</div>
-                  {props.units.edges.map(({ node }) =>
-                    <>
+                    {props.aiUnits.map((item) =>
+                      <>
                       <button
-                        key={node.id}
                         className='topic-item'
                         onClick={() => this.toggleCollapse()}
                       >
-                        <div className='title'>{node.title}</div>
+                        <div className='title'>{item.title}</div>
                         <span className='link'>подробнее</span>
                       </button>
                       <Collapse isOpen={this.state.toggle}>
                         <ListGroup>
-                          {node.lessonSet.edges.map(({ node }) =>
+                          {item.lessonSet.edges.map(({ node }) =>
                             <ListGroupItem key={node.id}>
                               <Link to={`/topics/${node.id}/test`}>{node.title}</Link>
                             </ListGroupItem>
                           )}
                         </ListGroup>
                       </Collapse>
-                    </>
-                  )}
+                      </>
+                    )}
                 </div>
               )
             }

@@ -82,7 +82,7 @@ const BlockStyled = styled.div`
         border-radius: 10px;
      }
    }
-   
+
    @media(max-width: 600px) {
       height: 130px;
       flex-direction: row;
@@ -90,16 +90,16 @@ const BlockStyled = styled.div`
 
       .name-header {
           flex: 1;
-          
+
            .name {
               font-size: 18px;
            }
-           
+
            .grade {
               font-size: 16px;
            }
       }
-      
+
       .avatar {
         flex: 1;
           width: 80px;
@@ -109,22 +109,22 @@ const BlockStyled = styled.div`
           mix-blend-mode: multiply;
         }
        }
-   
+
     .rating {
        flex: 1;
        text-align: right;
-       
+
        font-size: 18px;
-     
+
        .yourlvl {
           font-size: 12px;
        }
-       
+
        .count {
           font-size: 36px;
           line-height: 37px;
        }
-       
+
        .bar {
           display: none;
         }
@@ -135,7 +135,17 @@ class UserInfoBlock extends Component {
   setAvatar = (rating) => {
     if (rating < 15) {
       return '/avatars/15.png'
-    } else if (rating < 100) {
+    }
+    if (rating < 30) {
+      return '/avatars/19-2.png'
+    }
+    if (rating < 45) {
+      return '/avatars/25-2.png'
+    }
+    if (rating < 60) {
+      return '/avatars/25-3.png'
+    }
+    if (rating < 100) {
       return '/avatars/12.png'
     }
   }
