@@ -5,6 +5,7 @@ import { Switch, BrowserRouter as Router, Route } from 'react-router-dom'
 // import ArticleBlock from './components/ArticleBlock'
 import TopicsPage from './components/TopicsPage'
 import ArticlePage from './components/ArticlePage'
+import SubjectsPage from './components/SubjectsPage'
 import TestPage from './components/TestPage'
 import AuthPage from './components/AuthPage'
 import FirstScenarioChallenge from './components/FirstScenarioChallenge'
@@ -81,6 +82,7 @@ export default class App extends Component {
               {...props}
             />
           )}/>
+          <Route exact path='/subjects/:username' component={SubjectsPage}/>
 
           <Route exact path='/topics/:id' component={ArticlePage}/>
           <Route exact path='/topics/:id/test' component={TestPage}/>

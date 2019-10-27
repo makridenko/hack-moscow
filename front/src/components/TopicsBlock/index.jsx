@@ -47,7 +47,7 @@ const BlockStyled = styled.div`
      display: flex;
      flex-direction: column;
      justify-content: space-around;
-     align-items: center;
+     align-items: flex-start;
      padding: 25px 70px;
    }
 
@@ -70,6 +70,8 @@ const BlockStyled = styled.div`
 
       background: #2665C5;
       border-radius: 10px;
+      outline: none;
+      border: 0;
       color: #FFFFFF;
 
       transition: background 0.2s;
@@ -95,9 +97,34 @@ const BlockStyled = styled.div`
         font-size: 18px;
      }
    }
+<<<<<<< HEAD
 
+=======
+   
+    .list-group-item {
+        border: 0;
+    }
+   
+>>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
     @media(max-width: 600px) {
+       min-height: 200px;
       margin: 15px 0;
+      
+      .topics-block {
+          padding: 25px 30px;
+      }
+      
+      .header {
+          text-align: center;
+      }
+      
+      .title {
+        font-size: 16px;
+      }
+      
+      .link { display: none; }
+      
+   
     }
 `
 

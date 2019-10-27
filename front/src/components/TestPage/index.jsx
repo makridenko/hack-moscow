@@ -59,18 +59,28 @@ class TestPage extends Component {
           <QueryRenderer
             environment={environment}
             query={TestPageQuery}
+<<<<<<< HEAD
             variables={{
               id: id
             }}
+=======
+            variables={{ id: id }}
+>>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
             render={({ error, props }) => {
               if (error) {
                 return <div>{error.message}</div>
               } else if (props) {
+<<<<<<< HEAD
                 return(
                   <TestBlock
                     {...props}
                   />
                 )
+=======
+                return <TestBlock
+                  {...props}
+                />
+>>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
               }
             }}
           />

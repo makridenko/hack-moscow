@@ -135,8 +135,14 @@ const BlockStyled = styled.div`
 
         font-weight: 500;
         font-size: 16px;
-
-
+   }
+   
+   .right {
+      background: #26c576;
+   }
+   
+   .wrong {
+      background: #c52626;   
    }
 
   .btn-back {

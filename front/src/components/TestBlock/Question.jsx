@@ -81,7 +81,11 @@ class Question extends Component {
     const { edges, history } = this.props
     const testLength = edges.length
 
+<<<<<<< HEAD
     console.log('!!!');
+=======
+    const clickClass = ''
+>>>>>>> 979455ef525e028ccf9d8fcbca8c1ea2a9ceb7af
 
     if (step === testLength) {
       this.props.confirm(
@@ -104,8 +108,9 @@ class Question extends Component {
           </div>
 
           {node.answerSet.edges.map((answer, i) =>
-            <div key={i} className='answer-item'
+            <div key={i} className={'answer-item ' + clickClass[i]}
               onClick={() => {
+                clickClass[i] = answer.node.isTrue ? 'right' : 'wrong'
                 this.setState({
                   checkUser: [...checkUser, answer.node.isTrue ? 1 : 0],
                   lessonId: node.lesson.id

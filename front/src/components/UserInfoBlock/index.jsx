@@ -92,7 +92,7 @@ const BlockStyled = styled.div`
           flex: 1;
           
            .name {
-              font-size: 24px;
+              font-size: 18px;
            }
            
            .grade {
