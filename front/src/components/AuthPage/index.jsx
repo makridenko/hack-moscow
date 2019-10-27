@@ -32,7 +32,7 @@ class SignIn extends Component {
       (result, id, token, username) => {
         if (result) {
           this.props._saveUserData(id, token, username)
-          this.props.history.push('/')
+          this.props.history.push(`/${username}`)
         } else {
           alert('Error')
         }

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 5f3bc7726895465466ffcf2080a745fa
+ * @relayHash 763aa3453e8ddb3a97deed7314fdbd91
  */
 
 /* eslint-disable */
@@ -9,16 +9,14 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type ArticleBlockQueryVariables = {||};
+export type ArticleBlockQueryVariables = {|
+  id: string
+|};
 export type ArticleBlockQueryResponse = {|
-  +lessons: ?{|
-    +edges: $ReadOnlyArray<?{|
-      +node: ?{|
-        +id: string,
-        +title: string,
-        +theory: string,
-      |}
-    |}>
+  +unit: ?{|
+    +id: string,
+    +title: string,
+    +theory: string,
   |}
 |};
 export type ArticleBlockQuery = {|
@@ -29,15 +27,13 @@ export type ArticleBlockQuery = {|
 
 
 /*
-query ArticleBlockQuery {
-  lessons {
-    edges {
-      node {
-        id
-        title
-        theory
-      }
-    }
+query ArticleBlockQuery(
+  $id: ID!
+) {
+  unit(id: $id) {
+    id
+    title
+    theory
   }
 }
 */
@@ -45,56 +41,48 @@ query ArticleBlockQuery {
 const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
+    "kind": "LocalArgument",
+    "name": "id",
+    "type": "ID!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
     "kind": "LinkedField",
     "alias": null,
-    "name": "lessons",
+    "name": "unit",
     "storageKey": null,
-    "args": null,
-    "concreteType": "LessonNodeConnection",
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "id",
+        "variableName": "id"
+      }
+    ],
+    "concreteType": "UnitNode",
     "plural": false,
     "selections": [
       {
-        "kind": "LinkedField",
+        "kind": "ScalarField",
         "alias": null,
-        "name": "edges",
-        "storageKey": null,
+        "name": "id",
         "args": null,
-        "concreteType": "LessonNodeEdge",
-        "plural": true,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "node",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "LessonNode",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "title",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "theory",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          }
-        ]
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "title",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "theory",
+        "args": null,
+        "storageKey": null
       }
     ]
   }
@@ -106,24 +94,24 @@ return {
     "name": "ArticleBlockQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ArticleBlockQuery",
-    "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "query",
     "name": "ArticleBlockQuery",
     "id": null,
-    "text": "query ArticleBlockQuery {\n  lessons {\n    edges {\n      node {\n        id\n        title\n        theory\n      }\n    }\n  }\n}\n",
+    "text": "query ArticleBlockQuery(\n  $id: ID!\n) {\n  unit(id: $id) {\n    id\n    title\n    theory\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '37232ef31ee1941f87ef193d55660527';
+(node/*: any*/).hash = 'e72848a70efab3572b942b21792e9468';
 module.exports = node;

@@ -37,7 +37,10 @@ class LessonFilter(django_filters.FilterSet):
 class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
-        fields = []
+        fields = [
+            'difficulty',
+            'lesson__id',
+        ]
 
 
 class AnswerFilter(django_filters.FilterSet):
@@ -72,7 +75,10 @@ class LessonNode(DjangoObjectType):
 class TaskNode(DjangoObjectType):
     class Meta:
         model = Task
-        filter_fields = {}
+        filter_fields = {
+            'difficulty': ['exact'],
+            'lesson__id': ['exact'],
+        }
         interfaces = (graphene.relay.Node, )
 
 
@@ -82,6 +88,7 @@ class AnswerNode(DjangoObjectType):
         filter_fields = {}
         interfaces = (graphene.relay.Node, )
 
+''' Own Object Types '''
 
 class Query(graphene.ObjectType):
     subject = graphene.relay.Node.Field(SubjectNode)

@@ -1,29 +1,24 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-// import { QueryRenderer, graphql } from 'react-relay'
+import { QueryRenderer, graphql } from 'react-relay'
 import styled from 'styled-components'
 
-// import environment from '../../Environment'
-// import ReactMarkdown from 'react-markdown'
+import environment from '../../Environment'
+import ReactMarkdown from 'react-markdown'
 import { withRouter } from 'react-router-dom'
 
 import arrowBack from './backArrow.svg'
 
-/*
+
 const MyQuery = graphql`
-query ArticleBlockQuery {
-  lessons {
-    edges {
-      node {
-        id
-        title
-        theory
-      }
-    }
+query ArticleBlockQuery($id: ID!) {
+  unit(id: $id) {
+    id
+    title
+    theory
   }
 }
 `
-*/
 
 const BlockStyled = styled.div`
    position: relative;
@@ -142,12 +137,17 @@ const BlockStyled = styled.div`
 
 class ArticleBlock extends Component {
   render () {
-    const { history } = this.props
+    const { history, id } = this.props
+
+    console.log(id);
 
     return (
       <BlockStyled>
-        {/*<QueryRenderer
+        <QueryRenderer
           environment={environment}
+          variables={{
+            id: id
+          }}
           query={MyQuery}
           render={({ error, props }) => {
             if (error) {
@@ -155,28 +155,24 @@ class ArticleBlock extends Component {
             } else if (props) {
               return (
                 <div className='article-block'>
-                  {props.lessons.edges.map(({ node }) =>
-                    <React.Fragment key={node.id}>
-                      <div className='header'>
-                        {node.title}
-                      </div>
-                      <div className='subheader'>
-                          Теория
-                      </div>
+                  <React.Fragment key={props.unit.id}>
+                    <div className='header'>
+                      {props.unit.title}
+                    </div>
+                    <div className='subheader'>
+                        Теория
+                    </div>
 
-                      <ReactMarkdown key={node.id} className='text'
-                        source={node.theory}/>
-                      <button className='btn-nxt' onClick={() => history.push(`/topics/${node.title}/test`)} >Дальше</button>
-                    </React.Fragment>
-                  )}
-
+                    <ReactMarkdown key={props.unit.id} className='text'
+                      source={props.unit.theory}/>
+                    <button className='btn-nxt' onClick={() => history.push(`/topics/${props.unit.id}/test`)} >Дальше</button>
+                  </React.Fragment>
                 </div>
               )
             }
             return <div>Loading</div>
           }}
         />
-        */}
         <button className='btn-back' onClick={history.goBack}><img src={arrowBack} alt='' /> Назад</button>
       </BlockStyled>
     )
@@ -184,7 +180,8 @@ class ArticleBlock extends Component {
 }
 
 ArticleBlock.propTypes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  id: PropTypes.object.isRequired
 }
 
 export default withRouter(ArticleBlock)

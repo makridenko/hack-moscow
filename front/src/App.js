@@ -3,10 +3,11 @@ import './App.css'
 
 import { Switch, BrowserRouter as Router, Route } from 'react-router-dom'
 // import ArticleBlock from './components/ArticleBlock'
-// import TopicsPage from './components/TopicsPage'
-// import ArticlePage from './components/ArticlePage'
-// import TestPage from './components/TestPage'
+import TopicsPage from './components/TopicsPage'
+import ArticlePage from './components/ArticlePage'
+import TestPage from './components/TestPage'
 import AuthPage from './components/AuthPage'
+import FirstScenarioChallenge from './components/FirstScenarioChallenge'
 
 import { ROLE } from './constants'
 
@@ -66,14 +67,23 @@ export default class App extends Component {
     return (
       <Router>
         <Switch>
-          {/* <Route exact path='/' component={TopicsPage}/> */}
-          <Route exact path='/auth' component={() => (
+          <Route exact path="/scenario/first" component={() => (
+            <FirstScenarioChallenge
+            />
+          )}/>
+          <Route exact path='/sign_in' component={() => (
             <AuthPage
               _saveUserData={this.saveUserData}
             />
           )}/>
-          {/* <Route exact path='/topics/:topic' component={ArticlePage}/> */}
-          {/* <Route exact path='/topics/:topic/test' component={TestPage}/> */}
+          <Route exact path='/:username' component={(props) => (
+            <TopicsPage
+              {...props}
+            />
+          )}/>
+
+          <Route exact path='/topics/:id' component={ArticlePage}/>
+          <Route exact path='/topics/:topic/test' component={TestPage}/>
         </Switch>
       </Router>
     )

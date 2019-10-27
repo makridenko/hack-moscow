@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-// import { graphql, QueryRenderer } from 'react-relay'
-// import environment from '../../Environment'
+import { graphql, QueryRenderer } from 'react-relay'
+import environment from '../../Environment'
 
-/* const MyQuery = graphql`
-query UserInfoBlockQuery {
-   userInfos {
+import PropTypes from 'prop-types'
+
+const UserInfoBlockQuery = graphql`
+query UserInfoBlockQuery($username: String!){
+  userInfos(user_Username: $username) {
     edges {
       node {
         id
         firstName
         lastName
-        rating
+        experience
       }
     }
   }
 }
 `
-*/
 
 const BlockStyled = styled.div`
    height: 584px;
@@ -84,27 +85,33 @@ const BlockStyled = styled.div`
 
 class UserInfoBlock extends Component {
   setAvatar = (rating) => {
-    if (rating < 50) {
-      return '/avatars/12.png'
-    } else if (rating < 100) {
+    if (rating < 15) {
       return '/avatars/15.png'
+    } else if (rating < 100) {
+      return '/avatars/12.png'
     }
   }
 
+  getExp = (exp) => {
+    localStorage.setItem('USER_EXP', exp)
+  }
+
   render () {
+    const username = this.props.match.params.username
     return (
       <BlockStyled>
-        {/*<QueryRenderer
+        <QueryRenderer
           environment={environment}
-          query={MyQuery}
+          query={UserInfoBlockQuery}
+          variables={{username: username}}
           render={({ error, props }) => {
             if (error) {
               return <div>{error.message}</div>
             } else if (props) {
               return (
                 props.userInfos.edges.map(({ node }) => {
-                  const avaURL = this.setAvatar(node.rating)
-
+                  const avaURL = this.setAvatar(node.experience)
+                  this.getExp(node.experience)
                   return (
                     <React.Fragment key={node.id}>
                       <div>
@@ -113,8 +120,8 @@ class UserInfoBlock extends Component {
                       </div>
                       <div className='avatar'><img src={avaURL} alt='12' /></div>
                       <div className='rating'>
-                        <span сlassName='yourlvl'>Твой уровень</span><br />
-                        <span className='count'>{node.rating}</span> / 100
+                        <span сlassName='yourlvl'>Твой опыт</span><br />
+                        <span className='count'>{node.experience}</span>
                         <div className='bar'><div className='rating-strip' style={{ width: node.rating + '%' }}></div></div>
                       </div>
                     </React.Fragment>)
@@ -123,10 +130,14 @@ class UserInfoBlock extends Component {
 
             return <div>Loading</div>
           }}
-        />*/}
+        />
       </BlockStyled>
     )
   }
+}
+
+UserInfoBlock.propTypes = {
+  match: PropTypes.object.isRequired
 }
 
 export default UserInfoBlock

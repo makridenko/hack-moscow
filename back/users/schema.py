@@ -14,13 +14,11 @@ from .models import (
     UserTask,
 )
 
-'''
 from subjects.models import (
     Answer,
     Task,
     Lesson,
 )
-'''
 
 
 """ GraphQL filters """
@@ -28,13 +26,17 @@ from subjects.models import (
 class UserFilter(django_filters.FilterSet):
     class Meta:
         model = get_user_model()
-        fields = ['username']
+        fields = [
+            'username',
+        ]
 
 
 class UserInfoFilter(django_filters.FilterSet):
     class Meta:
         model = UserInfo
-        fields = []
+        fields = [
+            'user__username',
+        ]
 
 
 class UserLessonRateFilter(django_filters.FilterSet):
@@ -59,11 +61,16 @@ class UserNode(DjangoObjectType):
         }
         interfaces = (graphene.relay.Node, )
 
+class UserType(DjangoObjectType):
+    class Meta:
+        model = get_user_model()
 
 class UserInfoNode(DjangoObjectType):
     class Meta:
         model = UserInfo
-        filter_fields = {}
+        filter_fields = {
+            'user__username': ['exact'],
+        }
         interfaces = (graphene.relay.Node, )
 
 
@@ -138,12 +145,68 @@ class UserLogIn(graphene.Mutation):
         return UserLogIn(user=user)
 
 
+class FirstScenarioMutation(graphene.ClientIDMutation):
+    user = graphene.Field(UserNode)
+
+    class Input:
+        lesson_id = graphene.ID()
+        tasks = graphene.List(graphene.Boolean)
+
+    def mutate_and_get_payload(root, info, **input):
+        user = info.context.user
+        id = input.get('lesson_id')
+        tasks = input.get('tasks')
+
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+
+        _, pk = graphql_relay.from_global_id(id)
+        lesson = Lesson.objects.filter(pk=pk)[0]
+        user_info = UserInfo.objects.get(user=user)
+        user_lesson_rate = UserLessonRate.objects.get(
+            user=user,
+            lesson=lesson,
+        )
+
+
+        for task in tasks:
+            if task:
+                user_info.coff -= 1/40
+                user_lesson_rate.user_rating += 20
+                user_lesson_rate.lesson_rating -= 20
+            else:
+                user_info.coff += 1/40
+                user_lesson_rate.user_rating -= 20
+                user_lesson_rate.lesson_rating += 20
+
+        user_info.experience += 20
+        user_info.save()
+        user_lesson_rate.save()
+
+        tasks_for_lesson = Task.objects.filter(
+            lesson=lesson
+        )
+
+        for task in tasks_for_lesson:
+            t_ = UserTask.objects.get(
+                user=user,
+                task=task,
+            )
+            t_.is_done = True
+            t_.save()
+
+        return FirstScenarioMutation(user=user)
+
+
 class Query(graphene.ObjectType):
-    user = graphene.relay.Node.Field(UserNode)
-    users = DjangoFilterConnectionField(
+    user = DjangoFilterConnectionField(
         UserNode,
         filterset_class = UserFilter,
     )
+    users = graphene.List(UserType)
+
+    def resolve_users(self, info):
+        return get_user_model().objects.all()
 
     user_info = graphene.relay.Node.Field(UserInfoNode)
     user_infos = DjangoFilterConnectionField(
@@ -168,3 +231,4 @@ class Mutation(graphene.ObjectType):
     # create_user_task_answer = CreateUserTaskAnswer.Field()
     create_user = CreateUser.Field()
     login = UserLogIn.Field()
+    first_scenario = FirstScenarioMutation.Field()
