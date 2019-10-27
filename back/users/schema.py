@@ -61,9 +61,11 @@ class UserNode(DjangoObjectType):
         }
         interfaces = (graphene.relay.Node, )
 
+
 class UserType(DjangoObjectType):
     class Meta:
         model = get_user_model()
+
 
 class UserInfoNode(DjangoObjectType):
     class Meta:
@@ -198,6 +200,48 @@ class FirstScenarioMutation(graphene.ClientIDMutation):
         return FirstScenarioMutation(user=user)
 
 
+class TestMutation(graphene.ClientIDMutation):
+    user = graphene.Field(UserNode)
+
+    class Input:
+        lesson_id = graphene.ID()
+        tasks = graphene.List(graphene.Boolean)
+
+    def mutate_and_get_payload(root, info, **input):
+        user = info.context.user
+        id = input.get('lesson_id')
+        tasks = input.get('tasks')
+
+        if user.is_anonymous:
+            raise Exception('Not logged in')
+
+        _, pk = graphql_relay.from_global_id(id)
+        lesson = Lesson.objects.filter(pk=pk)[0]
+        user_info = UserInfo.objects.get(user=user)
+        user_lesson_rate = UserLessonRate.objects.get(
+            user=user,
+            lesson=lesson,
+        )
+
+        tasks_diff = Task.objects.filter(lesson=lesson)[0].difficulty
+
+        for task in tasks:
+            if task:
+                user_info.coff -= 1/tasks_diff
+                user_lesson_rate.user_rating += 20
+                user_lesson_rate.lesson_rating -= 20
+                user_info.experience += (50-tasks_diff)/10
+            else:
+                user_info.coff += 1/tasks_diff
+                user_lesson_rate.user_rating -= 20
+                user_lesson_rate.lesson_rating += 20
+
+        user_info.save()
+        user_lesson_rate.save()
+
+        return TestMutation(user=user)
+
+
 class Query(graphene.ObjectType):
     user = DjangoFilterConnectionField(
         UserNode,
@@ -232,3 +276,4 @@ class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     login = UserLogIn.Field()
     first_scenario = FirstScenarioMutation.Field()
+    test_mutation = TestMutation.Field()

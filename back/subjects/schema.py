@@ -13,6 +13,11 @@ from .models import (
     Answer,
 )
 
+from users.models import (
+    UserInfo,
+    UserLessonRate,
+)
+
 
 """ GraphQL filters """
 
@@ -64,6 +69,9 @@ class UnitNode(DjangoObjectType):
         filter_fields = {}
         interfaces = (graphene.relay.Node, )
 
+class UnitType(DjangoObjectType):
+    class Meta:
+        model = Unit
 
 class LessonNode(DjangoObjectType):
     class Meta:
@@ -102,6 +110,29 @@ class Query(graphene.ObjectType):
         UnitNode,
         filterset_class = UnitFilter,
     )
+
+    ai_units = graphene.List(UnitType)
+
+    def resolve_ai_units(self, info):
+        user = info.context.user
+
+        user_coff = UserInfo.objects.get(user=user).coff
+        units = Unit.objects.all()
+        ai_units = []
+
+        for unit in units:
+            lessons = Lesson.objects.filter(unit=unit)
+            lesson_rating = 0
+            for lesson in lessons:
+                try:
+                    rate = UserLessonRate.objects.get(user=user, lesson=lesson)
+                    lesson_rating += rate.lesson_rating
+                except: lesson_rating += 10
+            if (lesson_rating-user_coff) < 1: ai_units.append(unit)
+
+        return ai_units
+
+
 
     lesson = graphene.relay.Node.Field(LessonNode)
     lessons = DjangoFilterConnectionField(
