@@ -2,16 +2,34 @@ import React, { Component } from 'react'
 import { QueryRenderer, graphql } from 'react-relay'
 import styled from 'styled-components'
 
+import { Link}  from 'react-router-dom'
+
+import {
+  Collapse,
+  ListGroup,
+  ListGroupItem,
+} from 'reactstrap';
+
 import environment from '../../Environment'
-import { Link } from 'react-router-dom'
 
 const MyQuery = graphql`
 query TopicsBlockQuery {
-  lessons {
+  units {
     edges {
       node {
         id
         title
+        subject {
+          title
+        }
+        lessonSet {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
       }
     }
   }
@@ -21,10 +39,10 @@ query TopicsBlockQuery {
 const BlockStyled = styled.div`
    min-height: 584px;
    margin: 30px 0;
-   
+
    background: #FFFFFF;
    border-radius: 10px;
-   
+
    .topics-block {
      display: flex;
      flex-direction: column;
@@ -32,7 +50,7 @@ const BlockStyled = styled.div`
      align-items: center;
      padding: 25px 70px;
    }
-   
+
    .header {
       width: 100%;
       font-weight: bold;
@@ -45,31 +63,31 @@ const BlockStyled = styled.div`
       height: 63px;
       margin: 10px 0;
       padding: 0 30px;
-      
+
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
+
       background: #2665C5;
       border-radius: 10px;
       color: #FFFFFF;
-      
+
       transition: background 0.2s;
-      
+
       &:hover {
         background: #3e7cda;
         text-decoration: none;
       }
-      
+
       &:active {
           background: #2158ab;
       }
 
      .title {
         font-weight: bold;
-        font-size: 18px;      
+        font-size: 18px;
      }
-     
+
      .link {
         color: #ffffff;
         text-decoration: underline;
@@ -84,6 +102,17 @@ const BlockStyled = styled.div`
 `
 
 class TopicsBlock extends Component {
+
+  state = {
+    toggle: false,
+  }
+
+  toggleCollapse = () => {
+    this.setState({
+      toggle: !this.state.toggle
+    })
+  }
+
   render () {
     return (
       <BlockStyled>
@@ -95,19 +124,29 @@ class TopicsBlock extends Component {
               return <div>{error.message}</div>
             } else if (props) {
               return (
-                <div className='topics-block'
-                >
-                  <div className='header'
-                  >Матеша</div>
-                  {props.lessons.edges.map(({ node }) =>
-                    <Link
-                      key={node.id}
-                      to={`/topics/${node.title}`}
-                      className='topic-item'
-                    >
-                      <div className='title'>{node.title}</div>
-                      <span className='link'>пройти</span>
-                    </Link>)}
+                <div className='topics-block'>
+                  <div className='header'>Математика</div>
+                  {props.units.edges.map(({ node }) =>
+                    <>
+                      <button
+                        key={node.id}
+                        className='topic-item'
+                        onClick={() => this.toggleCollapse()}
+                      >
+                        <div className='title'>{node.title}</div>
+                        <span className='link'>подробнее</span>
+                      </button>
+                      <Collapse isOpen={this.state.toggle}>
+                        <ListGroup>
+                          {node.lessonSet.edges.map(({ node }) =>
+                            <ListGroupItem key={node.id}>
+                              <Link to={`/topics/${node.id}/test`}>{node.title}</Link>
+                            </ListGroupItem>
+                          )}
+                        </ListGroup>
+                      </Collapse>
+                    </>
+                  )}
                 </div>
               )
             }

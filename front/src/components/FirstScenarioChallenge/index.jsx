@@ -3,10 +3,15 @@ import { Container } from 'reactstrap'
 import styled from 'styled-components'
 import Header from '../Header'
 import TestBlock from '../TestBlock'
+import { QueryRenderer, graphql } from 'react-relay'
 
-const TestPageQuery = graphql`
-query TestPageQuery($id: ID!) {
-  tasks(lesson_Id: id) {
+import environment from '../../Environment'
+
+import FirstScenarioMutation from '../../mutations/FirstScenarioMutation'
+
+const FirstScenarioChallengeQuery = graphql`
+query FirstScenarioChallengeQuery{
+  tasks(lesson_Id: "TGVzc29uTm9kZTox") {
     edges {
       node {
         description
@@ -43,27 +48,41 @@ const PageStyled = styled.div`
     }
 `
 
-class TestPage extends Component {
-  render () {
-    const id = this.props.match.params.id
+
+export default class FirstScenarioChallenge extends Component {
+
+  confirmScenario = (tests, lessonId) => {
+    FirstScenarioMutation(tests, lessonId,
+      (result, username) => {
+        if (result) {
+          console.log(result, username);
+          return username
+        } else {
+          alert('Error')
+        }
+      })
+  }
+
+  render() {
     return (
       <PageStyled>
         <Header />
-        <Container className='topics-container'>
+        <Container className="topics-container">
           <QueryRenderer
             environment={environment}
-            query={TestPageQuery}
-            variables={{
-              lesson_Id: id
-            }}
+            query={FirstScenarioChallengeQuery}
             render={({ error, props }) => {
               if (error) {
                 return <div>{error.message}</div>
               } else if (props) {
-                <TestBlock
-                  {...props}
-                />
+                return (
+                  <TestBlock
+                    {...props}
+                    confirm={this.confirmScenario}
+                  />
+                )
               }
+              return <div>Loading...</div>
             }}
           />
         </Container>
@@ -71,5 +90,3 @@ class TestPage extends Component {
     )
   }
 }
-
-export default TestPage

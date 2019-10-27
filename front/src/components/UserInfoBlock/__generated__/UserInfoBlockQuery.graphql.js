@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 6cc02d5cc50e22a7544195586d5d160e
+ * @relayHash d58264a810c5f2792bae0bc3171ed9cb
  */
 
 /* eslint-disable */
@@ -9,7 +9,9 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type UserInfoBlockQueryVariables = {||};
+export type UserInfoBlockQueryVariables = {|
+  username: string
+|};
 export type UserInfoBlockQueryResponse = {|
   +userInfos: ?{|
     +edges: $ReadOnlyArray<?{|
@@ -17,7 +19,7 @@ export type UserInfoBlockQueryResponse = {|
         +id: string,
         +firstName: string,
         +lastName: string,
-        +rating: number,
+        +experience: number,
       |}
     |}>
   |}
@@ -30,14 +32,16 @@ export type UserInfoBlockQuery = {|
 
 
 /*
-query UserInfoBlockQuery {
-  userInfos {
+query UserInfoBlockQuery(
+  $username: String!
+) {
+  userInfos(user_Username: $username) {
     edges {
       node {
         id
         firstName
         lastName
-        rating
+        experience
       }
     }
   }
@@ -47,11 +51,25 @@ query UserInfoBlockQuery {
 const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
+    "kind": "LocalArgument",
+    "name": "username",
+    "type": "String!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
     "kind": "LinkedField",
     "alias": null,
     "name": "userInfos",
     "storageKey": null,
-    "args": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "user_Username",
+        "variableName": "username"
+      }
+    ],
     "concreteType": "UserInfoNodeConnection",
     "plural": false,
     "selections": [
@@ -97,7 +115,7 @@ var v0 = [
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "rating",
+                "name": "experience",
                 "args": null,
                 "storageKey": null
               }
@@ -115,24 +133,24 @@ return {
     "name": "UserInfoBlockQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "UserInfoBlockQuery",
-    "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "query",
     "name": "UserInfoBlockQuery",
     "id": null,
-    "text": "query UserInfoBlockQuery {\n  userInfos {\n    edges {\n      node {\n        id\n        firstName\n        lastName\n        rating\n      }\n    }\n  }\n}\n",
+    "text": "query UserInfoBlockQuery(\n  $username: String!\n) {\n  userInfos(user_Username: $username) {\n    edges {\n      node {\n        id\n        firstName\n        lastName\n        experience\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '6eb724b0a4a127ca2d7a35509241fc89';
+(node/*: any*/).hash = 'af4e9db03e4fad2c7f9c36f6567acb56';
 module.exports = node;

@@ -68,7 +68,8 @@ import { withRouter } from 'react-router-dom'
 class Question extends Component {
   state = {
     step: 0,
-    checkUser: []
+    checkUser: [],
+    lessonId: ''
   }
 
   nextStep = () => {
@@ -80,11 +81,16 @@ class Question extends Component {
     const { edges, history } = this.props
     const testLength = edges.length
 
-    const { node } = edges[step]
 
     if (step === testLength) {
-      history.push('/')
+      this.props.confirm(
+        this.state.lessonId,
+        this.state.checkUser
+      )
+      history.push(`/${localStorage.getItem('USER_NAME')}`)
+      return 0
     } else {
+      const { node } = edges[step]
       return (
         <>
           <div className='header'>{node.lesson.title}</div>
@@ -100,7 +106,8 @@ class Question extends Component {
             <div key={i} className='answer-item'
               onClick={() => {
                 this.setState({
-                  checkUser: [...checkUser, answer.node.isTrue ? 1 : 0]
+                  checkUser: [...checkUser, answer.node.isTrue ? 1 : 0],
+                  lessonId: node.lesson.id
                 })
                 setTimeout(() => this.setState({ step: step + 1 }), 1500)
               }}>
@@ -115,7 +122,8 @@ class Question extends Component {
 
 Question.propTypes = {
   edges: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  confirm: PropTypes.func.isRequired,
 }
 
 export default withRouter(Question)

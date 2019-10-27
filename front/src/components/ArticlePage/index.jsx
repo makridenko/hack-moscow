@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import Header from '../Header'
 import ArticleBlock from '../ArticleBlock'
 
+import PropTypes from 'prop-types'
+
 const PageStyled = styled.div`
     height: 100vh;
     width: 100vw;
@@ -21,15 +23,22 @@ const PageStyled = styled.div`
 
 class ArticlePage extends Component {
   render () {
+    const id = this.props.match.params.id
     return (
       <PageStyled>
         <Header />
         <Container className='topics-container'>
-          <ArticleBlock />
+          <ArticleBlock
+            id={id}
+          />
         </Container>
       </PageStyled>
     )
   }
+}
+
+ArticlePage.propTypes = {
+  match: PropTypes.object.isRequired
 }
 
 export default ArticlePage

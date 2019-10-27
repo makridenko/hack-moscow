@@ -64,9 +64,6 @@
     "test": "node scripts/test.js",
     "relay": "relay-compiler --src ./src --schema ../data/schema.json"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

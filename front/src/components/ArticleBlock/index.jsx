@@ -9,16 +9,13 @@ import { withRouter } from 'react-router-dom'
 
 import arrowBack from './backArrow.svg'
 
+
 const MyQuery = graphql`
-query ArticleBlockQuery {
-  lessons {
-    edges {
-      node {
-        id
-        title
-        theory
-      }
-    }
+query ArticleBlockQuery($id: ID!) {
+  unit(id: $id) {
+    id
+    title
+    theory
   }
 }
 `
@@ -26,17 +23,17 @@ query ArticleBlockQuery {
 const BlockStyled = styled.div`
    position: relative;
    margin: 30px 0;
-   
+
    background: #FFFFFF;
    border-radius: 10px;
-   
+
    .header {
       width: 100%;
       font-weight: bold;
       font-size: 30px;
       margin-bottom: 8px;
    }
-   
+
     .subheader {
       width: 100%;
       font-weight: bold;
@@ -52,26 +49,26 @@ const BlockStyled = styled.div`
      justify-content: space-around;
      align-items: center;
      padding: 25px 70px;
-     
+
       width: 800px;
       margin: 24px auto;
       padding: 0 30px;
-      
+
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
 
-      
+
+
       &:hover {
         background: #FFFFFF;
       }
 
      .title {
         font-weight: bold;
-        font-size: 18px;      
+        font-size: 18px;
      }
-     
+
      .text {
         width: 100%;
         min-height: 371px;
@@ -79,11 +76,11 @@ const BlockStyled = styled.div`
         background: #F8F8F8;
         border-radius: 10px;
         padding: 20px 40px;
-        
+
         font-weight: 500;
         font-size: 16px;
      }
-     
+
      .btn-nxt {
         width: 204px;
         height: 45px;
@@ -97,18 +94,18 @@ const BlockStyled = styled.div`
         font-size: 16px;
 
         letter-spacing: -0.005em;
-        
+
         &:hover {
           background: #789fed;
         }
-        
+
         &:active {
           background: #4b7fe7;
         }
      }
-     
 
-     
+
+
      .link {
         color: #ffffff;
         text-decoration: underline;
@@ -116,7 +113,7 @@ const BlockStyled = styled.div`
         font-size: 18px;
      }
    }
-   
+
   .btn-back {
       position: absolute;
       left: 40px;
@@ -130,22 +127,27 @@ const BlockStyled = styled.div`
       outline: none;
 
       color: #AFB9D2;
-      
+
       img {
         margin-right: 10px;
       }
   }
-   
+
 `
 
 class ArticleBlock extends Component {
   render () {
-    const { history } = this.props
+    const { history, id } = this.props
+
+    console.log(id);
 
     return (
       <BlockStyled>
         <QueryRenderer
           environment={environment}
+          variables={{
+            id: id
+          }}
           query={MyQuery}
           render={({ error, props }) => {
             if (error) {
@@ -153,21 +155,18 @@ class ArticleBlock extends Component {
             } else if (props) {
               return (
                 <div className='article-block'>
-                  {props.lessons.edges.map(({ node }) =>
-                    <React.Fragment key={node.id}>
-                      <div className='header'>
-                        {node.title}
-                      </div>
-                      <div className='subheader'>
-                          Теория
-                      </div>
+                  <React.Fragment key={props.unit.id}>
+                    <div className='header'>
+                      {props.unit.title}
+                    </div>
+                    <div className='subheader'>
+                        Теория
+                    </div>
 
-                      <ReactMarkdown key={node.id} className='text'
-                        source={node.theory}/>
-                      <button className='btn-nxt' onClick={() => history.push(`/topics/${node.title}/test`)} >Дальше</button>
-                    </React.Fragment>
-                  )}
-
+                    <ReactMarkdown key={props.unit.id} className='text'
+                      source={props.unit.theory}/>
+                    <button className='btn-nxt' onClick={() => history.push(`/topics/${props.unit.id}/test`)} >Дальше</button>
+                  </React.Fragment>
                 </div>
               )
             }
@@ -181,7 +180,8 @@ class ArticleBlock extends Component {
 }
 
 ArticleBlock.propTypes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  id: PropTypes.object.isRequired
 }
 
 export default withRouter(ArticleBlock)

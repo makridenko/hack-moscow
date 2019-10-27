@@ -7,6 +7,7 @@ from graphene_django.types import DjangoObjectType
 
 from .models import (
     Subject,
+    Unit,
     Lesson,
     Task,
     Answer,
@@ -21,6 +22,12 @@ class SubjectFilter(django_filters.FilterSet):
         fields = []
 
 
+class UnitFilter(django_filters.FilterSet):
+    class Meta:
+        model = Unit
+        fields = []
+
+
 class LessonFilter(django_filters.FilterSet):
     class Meta:
         model = Lesson
@@ -30,7 +37,10 @@ class LessonFilter(django_filters.FilterSet):
 class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
-        fields = []
+        fields = [
+            'difficulty',
+            'lesson__id',
+        ]
 
 
 class AnswerFilter(django_filters.FilterSet):
@@ -48,6 +58,13 @@ class SubjectNode(DjangoObjectType):
         interfaces = (graphene.relay.Node, )
 
 
+class UnitNode(DjangoObjectType):
+    class Meta:
+        model = Unit
+        filter_fields = {}
+        interfaces = (graphene.relay.Node, )
+
+
 class LessonNode(DjangoObjectType):
     class Meta:
         model = Lesson
@@ -58,7 +75,10 @@ class LessonNode(DjangoObjectType):
 class TaskNode(DjangoObjectType):
     class Meta:
         model = Task
-        filter_fields = {}
+        filter_fields = {
+            'difficulty': ['exact'],
+            'lesson__id': ['exact'],
+        }
         interfaces = (graphene.relay.Node, )
 
 
@@ -68,12 +88,19 @@ class AnswerNode(DjangoObjectType):
         filter_fields = {}
         interfaces = (graphene.relay.Node, )
 
+''' Own Object Types '''
 
 class Query(graphene.ObjectType):
     subject = graphene.relay.Node.Field(SubjectNode)
     subjects = DjangoFilterConnectionField(
         SubjectNode,
         filterset_class = SubjectFilter,
+    )
+
+    unit = graphene.relay.Node.Field(UnitNode)
+    units = DjangoFilterConnectionField(
+        UnitNode,
+        filterset_class = UnitFilter,
     )
 
     lesson = graphene.relay.Node.Field(LessonNode)
