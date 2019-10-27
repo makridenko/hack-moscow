@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Container } from 'reactstrap'
 import styled from 'styled-components'
+import { graphql, QueryRenderer } from 'react-relay'
+
+import environment from '../../Environment'
+
 import Header from '../Header'
 import TestBlock from '../TestBlock'
 
 const TestPageQuery = graphql`
 query TestPageQuery($id: ID!) {
-  tasks(lesson_Id: id) {
+  tasks(lesson_Id: $id) {
     edges {
       node {
         description
@@ -70,6 +75,10 @@ class TestPage extends Component {
       </PageStyled>
     )
   }
+}
+
+TestPage.propTypes = {
+  match: PropTypes.object.isRequired
 }
 
 export default TestPage

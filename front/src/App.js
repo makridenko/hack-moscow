@@ -76,7 +76,7 @@ export default class App extends Component {
               _saveUserData={this.saveUserData}
             />
           )}/>
-          <Route exact path='/:username' component={(props) => (
+          <Route exact path='/user/:username' component={(props) => (
             <TopicsPage
               {...props}
             />

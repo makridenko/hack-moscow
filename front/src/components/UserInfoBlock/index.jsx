@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { graphql, QueryRenderer } from 'react-relay'
+import { withRouter } from 'react-router-dom'
 import environment from '../../Environment'
 
 import PropTypes from 'prop-types'
@@ -155,6 +156,7 @@ class UserInfoBlock extends Component {
             if (error) {
               return <div>{error.message}</div>
             } else if (props) {
+              console.log(props.userInfos)
               return (
                 props.userInfos.edges.map(({ node }) => {
                   const avaURL = this.setAvatar(node.experience)
@@ -187,4 +189,4 @@ UserInfoBlock.propTypes = {
   match: PropTypes.object.isRequired
 }
 
-export default UserInfoBlock
+export default withRouter(UserInfoBlock)
