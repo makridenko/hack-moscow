@@ -7,9 +7,15 @@ from graphene_django.types import DjangoObjectType
 
 from .models import (
     Subject,
+    Unit,
     Lesson,
     Task,
     Answer,
+)
+
+from users.models import (
+    UserInfo,
+    UserLessonRate,
 )
 
 
@@ -18,6 +24,12 @@ from .models import (
 class SubjectFilter(django_filters.FilterSet):
     class Meta:
         model = Subject
+        fields = []
+
+
+class UnitFilter(django_filters.FilterSet):
+    class Meta:
+        model = Unit
         fields = []
 
 
@@ -30,7 +42,10 @@ class LessonFilter(django_filters.FilterSet):
 class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
-        fields = []
+        fields = [
+            'difficulty',
+            'lesson__id',
+        ]
 
 
 class AnswerFilter(django_filters.FilterSet):
@@ -48,6 +63,16 @@ class SubjectNode(DjangoObjectType):
         interfaces = (graphene.relay.Node, )
 
 
+class UnitNode(DjangoObjectType):
+    class Meta:
+        model = Unit
+        filter_fields = {}
+        interfaces = (graphene.relay.Node, )
+
+class UnitType(DjangoObjectType):
+    class Meta:
+        model = Unit
+
 class LessonNode(DjangoObjectType):
     class Meta:
         model = Lesson
@@ -58,7 +83,10 @@ class LessonNode(DjangoObjectType):
 class TaskNode(DjangoObjectType):
     class Meta:
         model = Task
-        filter_fields = {}
+        filter_fields = {
+            'difficulty': ['exact'],
+            'lesson__id': ['exact'],
+        }
         interfaces = (graphene.relay.Node, )
 
 
@@ -68,6 +96,7 @@ class AnswerNode(DjangoObjectType):
         filter_fields = {}
         interfaces = (graphene.relay.Node, )
 
+''' Own Object Types '''
 
 class Query(graphene.ObjectType):
     subject = graphene.relay.Node.Field(SubjectNode)
@@ -75,6 +104,35 @@ class Query(graphene.ObjectType):
         SubjectNode,
         filterset_class = SubjectFilter,
     )
+
+    unit = graphene.relay.Node.Field(UnitNode)
+    units = DjangoFilterConnectionField(
+        UnitNode,
+        filterset_class = UnitFilter,
+    )
+
+    ai_units = graphene.List(UnitType)
+
+    def resolve_ai_units(self, info):
+        user = info.context.user
+
+        user_coff = UserInfo.objects.get(user=user).coff
+        units = Unit.objects.all()
+        ai_units = []
+
+        for unit in units:
+            lessons = Lesson.objects.filter(unit=unit)
+            lesson_rating = 0
+            for lesson in lessons:
+                try:
+                    rate = UserLessonRate.objects.get(user=user, lesson=lesson)
+                    lesson_rating += rate.lesson_rating
+                except: lesson_rating += 10
+            if (lesson_rating-user_coff) < 1: ai_units.append(unit)
+
+        return ai_units
+
+
 
     lesson = graphene.relay.Node.Field(LessonNode)
     lessons = DjangoFilterConnectionField(

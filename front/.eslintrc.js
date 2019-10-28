@@ -3,7 +3,13 @@ module.exports = {
         "browser": true,
         "es6": true
     },
-    "extends": "standard",
+    "extends": [
+      //  "standard",
+    "eslint:recommended",
+
+    "plugin:react/recommended"
+
+],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"

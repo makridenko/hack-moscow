@@ -11,7 +11,7 @@ class Subject(models.Model):
         return f'{self.title}'
 
 
-class Lesson(models.Model):
+class Unit(models.Model):
     title = models.CharField(
         max_length=100,
         null=False,
@@ -21,18 +21,46 @@ class Lesson(models.Model):
         null=False,
     )
 
+    description = models.TextField(
+        null=False,
+    )
+
     subject = models.ForeignKey(
         Subject,
         on_delete=models.CASCADE,
         null=False,
     )
 
-    rating = models.IntegerField(
-        default=0,
+    def __str__(self):
+        return f'{self.title}'
+
+
+class Lesson(models.Model):
+    title = models.CharField(
+        max_length=100,
+        null=False,
+    )
+
+    unit = models.ForeignKey(
+        Unit,
+        on_delete=models.CASCADE,
+        null=False,
+    )
+
+    description = models.TextField(
+        null=False,
+    )
+
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="Lesson_parent",
     )
 
     def __str__(self):
-        return f'{self.subject.title}/{self.title}'
+        return f'{self.unit.title}/{self.title}'
 
 
 class Task(models.Model):
@@ -44,6 +72,10 @@ class Task(models.Model):
         Lesson,
         on_delete=models.CASCADE,
         null=False,
+    )
+
+    difficulty = models.FloatField(
+        default=40,
     )
 
     def __str__(self):
