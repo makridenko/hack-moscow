@@ -218,10 +218,18 @@ class TestMutation(graphene.ClientIDMutation):
         _, pk = graphql_relay.from_global_id(id)
         lesson = Lesson.objects.filter(pk=pk)[0]
         user_info = UserInfo.objects.get(user=user)
-        user_lesson_rate = UserLessonRate.objects.get(
-            user=user,
-            lesson=lesson,
-        )
+        print('!')
+        try:
+            user_lesson_rate = UserLessonRate.objects.get(
+                user=user,
+                lesson=lesson,
+            )
+        except:
+            user_lesson_rate = UserLessonRate(
+                user=user,
+                lesson=lesson,
+            )
+            user.save()
 
         tasks_diff = Task.objects.filter(lesson=lesson)[0].difficulty
 

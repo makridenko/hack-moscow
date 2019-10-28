@@ -76,7 +76,7 @@ class SignIn extends Component {
       (result, id, token, username) => {
         if (result) {
           this.props._saveUserData(id, token, username)
-          this.props.history.push(`/user/${username}`)
+          this.props.history.push(`/subjects/${username}`)
         } else {
           alert('Error')
         }

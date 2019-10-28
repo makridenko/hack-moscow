@@ -95,19 +95,18 @@ const BlockStyled = styled.div`
 
 class SubjectsBlock extends Component {
   render () {
-    const { history } = this.props
+    const { history, match } = this.props
 
     return (
       <BlockStyled>
-        <div className='subjects-block'
-        >
+        <div className='subjects-block'>
           <div className='header'>Предметы</div>
           <div className='subjects-flex'>
             {data.map((item, i) => {
               const disabled = item.title !== 'Математика'
 
               const handleClick = !disabled ? () => {
-                history.push('/math')
+                history.push('/user/' + match.params.username)
               } : () => {}
 
               return <button
@@ -128,7 +127,8 @@ class SubjectsBlock extends Component {
 }
 
 SubjectsBlock.propTypes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired
 }
 
 export default withRouter(SubjectsBlock)

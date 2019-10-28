@@ -60,7 +60,7 @@ class Header extends Component {
     return (
       <HeaderStyled>
         <Container>
-          <a href='/'><img src={logo} alt='' /></a>
+          <a href='/subjects/masha'><img src={logo} alt='' /></a>
           <div className='coins'>
             <img src={uCoin} alt='u-coin' />
             <div>
